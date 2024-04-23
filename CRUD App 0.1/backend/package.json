@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.19.2",
+    "inquirer": "^9.2.18",
+    "mssql": "^10.0.2",
+    "nanospinner": "^1.1.0"
+  },
+  "name": "test1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/mssql": "^9.1.5"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
