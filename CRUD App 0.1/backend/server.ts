@@ -52,7 +52,7 @@ async function connectAndQuery() {
     }, 3000);
 
     app.get("/", (req, res) => {
-      res.send(`<h1>welcome to node js crude app<h1>`);
+      res.send(`<h1>welcome to node js crude app backend server<h1>`);
     });
 
     app.get("/api/sql", (req, res) => {
