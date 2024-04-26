@@ -19,8 +19,8 @@ function App() {
 
   return (
     <>
-      <h1>SQL Query Data</h1>
-      <p>Row Data Recieved :{query.length}</p>
+      <h2>SQL Query Data</h2>
+      <h6>Row Data Recieved :{query.length}</h6>
 
       {query.map((result) => (
         <div key={result[0]}>
