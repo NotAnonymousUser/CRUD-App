@@ -3,8 +3,10 @@ import inquirer from "inquirer";
 import chalk from "chalk";
 import { createSpinner } from "nanospinner";
 import express from "express";
+import cors from "cors";
 const app = express();
 const port = 3000;
+app.use(cors());
 const sqlQuery = await inquirer.prompt({
     name: "user",
     type: "input",
@@ -32,9 +34,9 @@ async function connectAndQuery() {
         setTimeout(() => {
             spinner.success();
         }, 2000);
-        setTimeout(() => {
-            console.log(chalk.green("Connected to SQL Server"));
-        }, 2000);
+        // setTimeout(() => {
+        //   console.log(chalk.green("Connected to SQL Server"));
+        // }, 2000);
         setTimeout(() => {
             console.log("Query results:", result.recordset);
         }, 3000);
@@ -45,7 +47,7 @@ async function connectAndQuery() {
             res.send(result.recordset);
         });
         app.listen(port, () => {
-            console.log(`Visit http://localhost:${port} in your browser.`);
+            console.log(`\nVisit http://localhost:${port} in your browser.`);
         });
     }
     catch (err) {

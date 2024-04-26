@@ -5,28 +5,45 @@ import axios from "axios";
 function App() {
   const [query, showQuery] = useState([]);
 
-  useEffect((): any => {
+  useEffect(() => {
     axios
-      .get("/api/sql")
-      .then((res: any) => {
-        showQuery(res.query);
-        console.log(res.query);
-        console.log(res);
+      .get("http://localhost:3000/api/sql")
+      .then((response) => {
+        showQuery(response.data);
+        console.log(response.data);
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   });
 
   return (
     <>
       <h1>SQL Query Data</h1>
-      <p>Query Data :{query.length}</p>
-      <p>{query}</p>
+      <p>Row Data Recieved :{query.length}</p>
 
-      {query.map((result, index) => {
-        <div key={result}></div>;
-      })}
+      {query.map((result) => (
+        <div key={result[0]}>
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <td>Id</td>
+                <td>Date</td>
+                <td>Customer ID</td>
+                <td>Amount</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{result.OID}</td>
+                <td>{result.DATE}</td>
+                <td>{result.CUSTOMER_ID}</td>
+                <td>{result.AMOUNT}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ))}
     </>
   );
 }
