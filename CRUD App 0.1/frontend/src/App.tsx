@@ -21,29 +21,31 @@ function App() {
     <>
       <h2>SQL Query Data</h2>
       <h6>Row Data Recieved :{query.length}</h6>
-
-      {query.map((result) => (
-        <div key={result[0]}>
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <td>Id</td>
-                <td>Date</td>
-                <td>Customer ID</td>
-                <td>Amount</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{result.OID}</td>
-                <td>{result.DATE}</td>
-                <td>{result.CUSTOMER_ID}</td>
-                <td>{result.AMOUNT}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ))}
+      <div>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <td>ID</td>
+              <td>Date</td>
+              <td>Customer ID</td>
+              <td>Amount</td>
+            </tr>
+          </thead>
+          <tbody>
+            {query.map((result) => (
+              <>
+                <div key={result[0]}></div>
+                <tr>
+                  <td>{result.OID}</td>
+                  <td>{result.DATE}</td>
+                  <td>{result.CUSTOMER_ID}</td>
+                  <td>{result.AMOUNT}</td>
+                </tr>
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
