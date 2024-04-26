@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(rgb(73, 73, 153), rgb(34, 21, 21));
+    text-align: center;
+}
