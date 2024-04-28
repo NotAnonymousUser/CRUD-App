@@ -18,9 +18,9 @@ const sqlQuery = await inquirer.prompt({
 
 const config = {
   user: "sa",
-  password: "Abacus@1",
-  server: "PK-KHI-MME-022",
-  database: "PracticeDB",
+  password: "sap123",
+  server: "MUBEEN-LENOVO-V",
+  database: "SBODemo",
   // port: 1433,
   options: { encrypt: false },
   pool: {
