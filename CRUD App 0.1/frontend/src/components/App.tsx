@@ -18,10 +18,13 @@ function App() {
   return (
     <>
       <div className="bg-gray-900 text-white p-4">
-        <h2 className="text-2xl font-bold mb-2">SQL Query Data</h2>
-        <h6>Row Data Received: {query.length}</h6>
+        <h2 className="text-2xl font-bold mb-2 text-center">Welcome Admin</h2>
+        {/* <h6>Row Data Received: {query.length}</h6> */}
         <div className="mt-4">
-          <form action="/query" method="get" name="SQL" className="mb-4">
+          <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Run
+          </button>
+          {/* <form action="/query" method="get" name="SQL" className="mb-4">
             <label htmlFor="query" className="block text-gray-400">
               Write your SQL Query here:
             </label>
@@ -34,10 +37,10 @@ function App() {
               value="Run"
               className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             />
-          </form>
+          </form> */}
         </div>
       </div>
-      <div className="bg-gray-800 p-4 mt-4">
+      <div className="bg-gray-800 p-2 ">
         <table className="w-full">
           <thead>
             <tr>

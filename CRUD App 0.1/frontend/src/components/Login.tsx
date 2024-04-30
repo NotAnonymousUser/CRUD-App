@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useNavigate from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function Login() {
   const initialValues = {
@@ -25,21 +25,11 @@ function Login() {
     } else if (values.username !== "admin" && values.password !== "123") {
       alert("The username or password is not correct");
     } else if (values.username == "admin" && values.password == "123") {
-      alert("You are now logged in");
       setIsLoggedIn(true);
       console.log(isLoggedIn);
-
-      
+      window.history.pushState("", "", "/home");
+      window.location.reload();
       // const navigate = useNavigate();
-
-      // useEffect(() => {
-      //   // Your condition here
-
-      //   if (isLoggedIn) {
-      //     // Change the URL based on the condition
-      //     navigate("/home");
-      //   }
-      // }, [navigate]);
     }
   };
 
@@ -47,7 +37,7 @@ function Login() {
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="max-w-md w-full px-8 py-6 bg-gray-800 rounded-lg shadow-md">
-          <h2 className="text-3xl font-semibold text-white mb-6">Login</h2>
+          <h2 className="text-3xl font-semibold text-white mb-6 text-center">Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
