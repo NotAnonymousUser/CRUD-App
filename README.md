@@ -38,3 +38,5 @@ This is a web-based application under active development that empowers users wit
 We welcome contributions to this project! Feel free to fork the repository, propose improvements, and submit pull requests.
 
 **Disclaimer:** This application is currently under development. The planned features section outlines potential future enhancements that are not yet implemented.
+
+**Author : Muhammad Mubeen Javaid**
