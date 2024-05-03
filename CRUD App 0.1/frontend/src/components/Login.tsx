@@ -30,6 +30,8 @@ function Login() {
       window.history.pushState("", "", "/home");
       window.location.reload();
       // const navigate = useNavigate();
+    } else {
+      alert(`The username does not exist`);
     }
   };
 
@@ -37,7 +39,9 @@ function Login() {
     <>
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="max-w-md w-full px-8 py-6 bg-gray-800 rounded-lg shadow-md">
-          <h2 className="text-3xl font-semibold text-white mb-6 text-center">Login</h2>
+          <h2 className="text-3xl font-semibold text-white mb-6 text-center ">
+            Login
+          </h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label

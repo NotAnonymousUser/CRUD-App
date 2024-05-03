@@ -1,17 +1,9 @@
 import mssql from "mssql";
-// import inquirer from "inquirer";
-import chalk from "chalk";
 import express from "express";
 import cors from "cors";
 const app = express();
 const port = 3000;
 app.use(cors());
-// const sqlQuery = await inquirer.prompt({
-//   name: "user",
-//   type: "input",
-//   message: chalk.yellow("Enter your SQL Query"),
-//   prefix: "",
-// });
 const config = {
     user: "sa",
     password: "Abacus@1",
@@ -25,40 +17,58 @@ const config = {
         idleTimeoutMillis: 15000,
     },
 };
-// async function connectAndQuery() {
-//   try {
-//     const pool = await mssql.connect(config);
-//     const result = await pool.request().query("select * from orders");
-//     console.log(`Connected to ${config.database} SQL Database`);
-//     console.log("Query results:", result.recordset);
-//     app.get("/", (req, res) => {
-//       res.send(`<h1>welcome to node js crude app backend server<h1>`);
-//     });
-//     app.get("/api/sql", (req, res) => {
-//       res.send(result.recordset);
-//     });
-//     app.listen(port, () => {
-//       console.log(`\nVisit http://localhost:${port} in your browser.`);
-//     });
-//   } catch (err) {
-//     console.error(chalk.red("Error:", err));
-//   }
-// }
-// connectAndQuery();
-async function connectAndQuery() {
+// async function connection() {}
+async function Query() {
     try {
-        const pool = await mssql.connect(config);
+        const pool = new mssql.ConnectionPool(config);
+        const connection = await pool.connect();
         console.log(`Connected to ${config.database} SQL Database`);
         // Function to fetch and send data
-        async function fetchDataAndSend() {
-            const result = await pool.request().query("select * from orders");
+        async function selectDataAndSend() {
+            const selectresult = await connection
+                .request()
+                .query("select * from orders");
             app.get("/api/sql", (req, res) => {
-                res.send(result.recordset);
+                res.send(selectresult.recordset);
             });
         }
-        // Call fetchDataAndSend initially and schedule it every second
-        await fetchDataAndSend();
-        setInterval(fetchDataAndSend, 1000);
+        async function updateDataAndSend() {
+            const updtresult = await connection
+                .request()
+                .query("UPDATE ORDERS SET CUSTOMER_ID = 100 WHERE AMOUNT = 3000");
+            app.put("/api/updt", (req, res) => {
+                console.log(updtresult);
+                res.send(updtresult.recordset);
+            });
+            const selectresult1 = await connection
+                .request()
+                .query("select * from orders");
+            app.get("/api/updt", (req, res) => {
+                res.send(selectresult1.recordset);
+            });
+        }
+        async function deleteDataAndSend() {
+            const updtresult = await connection
+                .request()
+                .query("DELETE FROM ORDERS WHERE AMOUNT = 9046.00");
+            app.put("/api/updt", (req, res) => {
+                console.log(updtresult);
+                res.send(updtresult.recordset);
+            });
+            const selectresult1 = await connection
+                .request()
+                .query("select * from orders");
+            app.get("/api/updt", (req, res) => {
+                res.send(selectresult1.recordset);
+            });
+        }
+        // Call selectDataAndSend initially and schedule it every second
+        await selectDataAndSend();
+        setInterval(selectDataAndSend, 1000);
+        await updateDataAndSend();
+        setInterval(updateDataAndSend, 1000);
+        await deleteDataAndSend();
+        setInterval(updateDataAndSend, 1000);
         app.get("/", (req, res) => {
             res.send(`<h1>welcome to node js crude app backend server<h1>`);
         });
@@ -67,7 +77,7 @@ async function connectAndQuery() {
         });
     }
     catch (err) {
-        console.error(chalk.red("Error:", err));
+        console.error("Error:", err);
     }
 }
-connectAndQuery();
+Query();
