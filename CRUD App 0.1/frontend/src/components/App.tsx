@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const createServer = axios.create({
-  baseURL: "http://localhost:3500",
-});
+// const createServer = axios.create({
+//   baseURL: "http://localhost:3500",
+// });
 
 function App() {
   const [query, showQuery] = useState([]);
