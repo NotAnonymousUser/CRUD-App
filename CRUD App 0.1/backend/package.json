@@ -14,7 +14,8 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/inquirer": "^9.0.7",
-    "@types/mssql": "^9.1.5"
+    "@types/mssql": "^9.1.5",
+    "nodemon": "^3.1.0"
   },
   "scripts": {
     "start": "node server.js"

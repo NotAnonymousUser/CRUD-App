@@ -44,7 +44,6 @@ async function Query() {
         .request()
         .query("UPDATE ORDERS SET CUSTOMER_ID = 100 WHERE AMOUNT = 3000");
       app.put("/api/updt", (req, res) => {
-        console.log(updtresult);
         res.send(updtresult.recordset);
       });
 
@@ -56,12 +55,22 @@ async function Query() {
       });
     }
     async function deleteDataAndSend() {
+      const delresult = await connection
+        .request()
+        .query("DELETE FROM ORDERS WHERE AMOUNT = 1057");
+      app.delete("/api/updt", (req, res) => {
+        res.send(updtresult.recordset);
+        console.log(`data deleted`);
+      });
+
       const updtresult = await connection
         .request()
-        .query("DELETE FROM ORDERS WHERE AMOUNT = 9046.00");
-      app.put("/api/updt", (req, res) => {
-        console.log(updtresult);
+        .query("select * from orders");
+
+      app.get("/api/edit", (req, res) => {
+        console.log(updtresult.recordset);
         res.send(updtresult.recordset);
+        
       });
 
       const selectresult1 = await connection
@@ -80,15 +89,22 @@ async function Query() {
     setInterval(updateDataAndSend, 1000);
 
     await deleteDataAndSend();
-    setInterval(updateDataAndSend, 1000);
+    setInterval(deleteDataAndSend, 1000);
 
     app.get("/", (req, res) => {
       res.send(`<h1>welcome to node js crude app backend server<h1>`);
+    });
+    app.post("/api/edit", (req, res) => {
+      res.send(`<h1>this is running<h1>`);
     });
 
     app.listen(port, () => {
       console.log(`\nVisit http://localhost:${port} in your browser.`);
     });
+
+    // app.listen(5173, () => {
+    //   console.log(`\nVisit http://localhost:5173 in your browser.`);
+    // });
   } catch (err) {
     console.error("Error:", err);
   }

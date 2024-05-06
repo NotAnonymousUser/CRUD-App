@@ -5,6 +5,11 @@ import axios from "axios";
 //   baseURL: "http://localhost:3500",
 // });
 
+let id = "";
+let date = "";
+let customer = "";
+let Amount = "";
+
 function App() {
   const [query, showQuery] = useState([]);
   const [update, updateQuery] = useState([]);
@@ -23,34 +28,47 @@ function App() {
   // });
 
   const runQuery = () => {
-    query.map((result, index) => {
-      console.log(Object.keys(result));
-      console.log(Object.values(result));
-      console.log(result);
-      console.log(result.OID);
-      console.log(result.DATE);
-      console.log(result.CUSTOMER_ID);
-      console.log(result.AMOUNT);
-    });
+    console.log(`this button function is running`);
+
+    // query.map((result, index) => {
+    //   console.log(Object.keys(result));
+    //   console.log(Object.values(result));
+    //   console.log(result);
+    //   console.log(result.OID);
+    //   console.log(result.DATE);
+    //   console.log(result.CUSTOMER_ID);
+    //   console.log(result.AMOUNT);
+    // });
   };
 
   const fetchDataSelect = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/updt");
       showQuery(response.data);
-      runQuery();
     } catch (error) {
       console.error(error);
     }
   };
   const fetchDataUpdate = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/updt");
-      showQuery(response.data);
+      const response1 = await axios.post(
+        "http://localhost:3000/api/edit",
+        runQuery()
+      );
+      query.map((result, index) => {
+        // console.log(Object.keys(result));
+        // console.log(Object.values(result));
+        // console.log(result);
+        console.log(result.OID);
+        console.log(result.DATE);
+        console.log(result.CUSTOMER_ID);
+        console.log(result.AMOUNT);
+      });
     } catch (error) {
       console.error(error);
     }
   };
+
   const fetchDataDelete = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/updt");
@@ -96,6 +114,12 @@ function App() {
         >
           Logout
         </button>
+        <button
+          className="text-center bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
+          // onClick={() => newDataClick()}
+        >
+          New
+        </button>
         {/* <div className="mt-4">
           <form action="/query" method="get" name="SQL" className="mb-4">
             <label htmlFor="query" className="block text-gray-400">
@@ -110,8 +134,8 @@ function App() {
               value="Run"
               className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             />
-          </form>
-        </div> */}
+            </form>
+          </div> */}
       </div>
       <div className="bg-gray-800 p-4 font-mono ">
         <table className="w-full">
@@ -126,7 +150,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {query.map((result, index) => (
+            {query.map((result, index: any) => (
               <tr key={index} className="border-t border-gray-700 text-white">
                 <td className="py-2">{index + 1}</td>
                 <td className="py-2">{result.OID}</td>
