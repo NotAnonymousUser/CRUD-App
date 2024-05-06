@@ -20,6 +20,14 @@ const config = {
   },
 };
 
+const iD = "";
+const date = "";
+const customer = "";
+const amount = "";
+
+const selectcommand = "select * from orders";
+let updateCommand = `UPDATE ORDERS SET AMOUNT = ${amount} WHERE CUSTOMER_ID = ${customer}`;
+
 // async function connection() {}
 
 async function Query() {
@@ -31,18 +39,14 @@ async function Query() {
 
     // Function to fetch and send data
     async function selectDataAndSend() {
-      const selectresult = await connection
-        .request()
-        .query("select * from orders");
+      const selectresult = await connection.request().query(`${selectcommand}`);
       app.get("/api/sql", (req, res) => {
         res.send(selectresult.recordset);
       });
     }
 
     async function updateDataAndSend() {
-      const updtresult = await connection
-        .request()
-        .query("UPDATE ORDERS SET CUSTOMER_ID = 100 WHERE AMOUNT = 3000");
+      const updtresult = await connection.request().query();
       app.put("/api/updt", (req, res) => {
         res.send(updtresult.recordset);
       });
@@ -70,7 +74,6 @@ async function Query() {
       app.get("/api/edit", (req, res) => {
         console.log(updtresult.recordset);
         res.send(updtresult.recordset);
-        
       });
 
       const selectresult1 = await connection

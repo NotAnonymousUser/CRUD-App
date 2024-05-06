@@ -55,15 +55,16 @@ function App() {
         "http://localhost:3000/api/edit",
         runQuery()
       );
-      query.map((result, index) => {
-        // console.log(Object.keys(result));
-        // console.log(Object.values(result));
-        // console.log(result);
-        console.log(result.OID);
-        console.log(result.DATE);
-        console.log(result.CUSTOMER_ID);
-        console.log(result.AMOUNT);
-      });
+      showQuery(response1.data);
+      // query.map((result, index) => {
+      //   // console.log(Object.keys(result));
+      //   // console.log(Object.values(result));
+      //   // console.log(result);
+      //   console.log(result.OID);
+      //   console.log(result.DATE);
+      //   console.log(result.CUSTOMER_ID);
+      //   console.log(result.AMOUNT);
+      // });
     } catch (error) {
       console.error(error);
     }
