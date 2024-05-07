@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// const createServer = axios.create({
-//   baseURL: "http://localhost:3500",
-// });
 
-let id = "";
-let date = "";
-let customer = "";
-let Amount = "";
+
 
 function App() {
   const [query, showQuery] = useState([]);
   const [update, updateQuery] = useState([]);
+  const [del, delData] = useState([]);
 
   //the following was used earlier when the page was refreshed to get the data automatically
 
@@ -27,20 +22,8 @@ function App() {
   //     });
   // });
 
-  const runQuery = () => {
-    console.log(`this button function is running`);
 
-    // query.map((result, index) => {
-    //   console.log(Object.keys(result));
-    //   console.log(Object.values(result));
-    //   console.log(result);
-    //   console.log(result.OID);
-    //   console.log(result.DATE);
-    //   console.log(result.CUSTOMER_ID);
-    //   console.log(result.AMOUNT);
-    // });
-  };
-
+  
   const fetchDataSelect = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/updt");
@@ -49,31 +32,52 @@ function App() {
       console.error(error);
     }
   };
-  const fetchDataUpdate = async () => {
+  const fetchDataUpdate = async (
+    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+  ) => {
     try {
-      const response1 = await axios.post(
-        "http://localhost:3000/api/edit",
-        runQuery()
-      );
-      showQuery(response1.data);
-      // query.map((result, index) => {
-      //   // console.log(Object.keys(result));
-      //   // console.log(Object.values(result));
-      //   // console.log(result);
-      //   console.log(result.OID);
-      //   console.log(result.DATE);
-      //   console.log(result.CUSTOMER_ID);
-      //   console.log(result.AMOUNT);
-      // });
+
+      // if (item?.OID > 0) {
+
+      // }
+
+      console.log(query);
+
+      console.log(item?.OID);
+      console.log(item?.DATE);
+      console.log(item?.CUSTOMER_ID);
+      console.log(item?.AMOUNT);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const fetchDataDelete = async () => {
+  const fetchDataDelete = async (
+    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+  ) => {
     try {
-      const response = await axios.get("http://localhost:3000/api/updt");
+      const response = await axios.delete("http://localhost:3000/api/updt");
       showQuery(response.data);
+
+      // Filter out the selected row from the query state
+      const filteredQuery = query.filter((row) => row.OID !== item?.OID);
+
+      // Update the state with the filtered data
+      showQuery(filteredQuery);
+
+      // if (item) {
+      //   console.log(filteredQuery);
+      //   console.log(`row data deleted`);
+      // }
+
+      const deleteData = await axios.post("http://localhost:3000/api/delete", {
+        id: item?.OID,
+        date: item?.DATE,
+        customer: item?.CUSTOMER_ID,
+        amount: item?.AMOUNT,
+      });
+
+      delData(deleteData.data);
     } catch (error) {
       console.error(error);
     }
@@ -89,11 +93,15 @@ function App() {
   const getDataClick = async () => {
     await fetchDataSelect();
   };
-  const editDataClick = async () => {
-    await fetchDataUpdate();
+  const editDataClick = async (
+    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+  ) => {
+    await fetchDataUpdate(item);
   };
-  const deleteDataClick = async () => {
-    await fetchDataDelete();
+  const deleteDataClick = async (
+    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+  ) => {
+    await fetchDataDelete(item);
   };
 
   return (
@@ -151,29 +159,31 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {query.map((result, index: any) => (
-              <tr key={index} className="border-t border-gray-700 text-white">
-                <td className="py-2">{index + 1}</td>
-                <td className="py-2">{result.OID}</td>
-                <td className="py-2">{result.DATE}</td>
-                <td className="py-2">{result.CUSTOMER_ID}</td>
-                <td className="py-2">{result.AMOUNT}</td>
-                <td>
-                  <button
-                    className="mt-1.5 float-right bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm font-mono"
-                    onClick={() => deleteDataClick()}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="mt-1.5 float-right bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
-                    onClick={() => editDataClick()}
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {query &&
+              query.map &&
+              query.map((item, index) => (
+                <tr key={index} className="border-t border-gray-700 text-white">
+                  <td className="py-2">{index + 1}</td>
+                  <td className="py-2">{item.OID}</td>
+                  <td className="py-2">{item.DATE}</td>
+                  <td className="py-2">{item.CUSTOMER_ID}</td>
+                  <td className="py-2">{item.AMOUNT}</td>
+                  <td>
+                    <button
+                      className="mt-1.5 float-right bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm font-mono"
+                      onClick={() => deleteDataClick(item)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="mt-1.5 float-right bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
+                      onClick={() => editDataClick(item)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

@@ -15,6 +15,7 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<App />} />
+      {/* <Route path="/update/:id" element={<Update />} /> */}
     </Route>
   )
 );
