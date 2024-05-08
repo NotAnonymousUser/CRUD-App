@@ -22,7 +22,7 @@ function App() {
 
   const fetchDataSelect = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/updt");
+      const response = await axios.get("http://localhost:3000/api/sql");
       showQuery(response.data);
       console.log(response);
     } catch (error) {
