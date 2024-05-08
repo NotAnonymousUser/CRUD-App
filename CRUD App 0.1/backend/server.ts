@@ -28,10 +28,10 @@ const config = {
   },
 };
 
-const id = "100";
+const id = "155";
 const date = "";
 const customer = "1";
-const amount = "2";
+const amount = "3000";
 
 const selectcommand = "select * from orders";
 let updateCommand = `UPDATE ORDERS SET AMOUNT = ${amount} WHERE CUSTOMER_ID = ${customer}`;
@@ -56,8 +56,12 @@ async function ConnectToDb() {
     }
 
     async function updateDataAndSend() {
-      const updtresult = await connection.request().query(`${updateCommand1}`);
-      app.put("/api/updt", (req, res) => {
+      app.put("/api/updt", async (req, res) => {
+        const updtresult = await connection
+          .request()
+          .query(
+            `UPDATE ORDERS SET AMOUNT = ${req.body.updatedItem.AMOUNT}  WHERE OID = ${req.body.updatedItem.OID} `
+          );
         console.log(req.body);
         console.log(`data updated`);
 
@@ -74,7 +78,7 @@ async function ConnectToDb() {
       app.delete("/api/updt", async (req, res) => {
         const delresult = await connection
           .request()
-          .query(`DELETE FROM ORDERS WHERE AMOUNT = ${req.body.amount}`);
+          .query(`DELETE FROM ORDERS WHERE CUSTOMER_ID = ${req.body.id}`);
         res.send(updtresult.recordset);
         console.log(`complete data of ID number ${req.body.id} is deleted`);
       });
@@ -118,8 +122,14 @@ async function ConnectToDb() {
     app.post("/api/update", async (req, res) => {
       try {
         await updateDataAndSend();
-        res.send(`<h1>this is running<h1>`);
-        console.log(`edit button is pressed and working`);
+        const updtresult = await connection
+          .request()
+          .query(
+            `UPDATE ORDERS SET AMOUNT = ${req.body.AMOUNT}  WHERE OID = ${req.body.OID} `
+          );
+        console.log(req.body);
+        console.log(`data updated`);
+        res.send(updtresult.recordset);
         return res.json;
       } catch (error) {
         console.error();

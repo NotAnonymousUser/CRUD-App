@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
   const [query, showQuery] = useState([]);
   const [update, updateQuery] = useState([]);
   const [del, delData] = useState([]);
+  const [editingRow, setEditingRow] = useState(null);
 
   //the following was used earlier when the page was refreshed to get the data automatically
 
@@ -30,30 +31,38 @@ function App() {
   };
 
   const fetchDataUpdate = async (
-    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+    // item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+    updatedItem:
+      | { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any }
+      | undefined
   ) => {
     try {
       // if (item?.OID > 0) {
-      const data = {
-        id: item?.OID,
-        date: item?.DATE,
-        customer: item?.CUSTOMER_ID,
-        amount: item?.AMOUNT,
-      };
+      // const data = {
+      //   id: item?.OID,
+      //   date: item?.DATE,
+      //   customer: item?.CUSTOMER_ID,
+      //   amount: item?.AMOUNT,
+      // };
       // }
       const response = await axios.post(
         "http://localhost:3000/api/update",
-        data
+        updatedItem
       );
       updateQuery(response.data);
+      setEditingRow(null);
       console.log(update);
-      console.log(item?.OID);
-      console.log(item?.DATE);
-      console.log(item?.CUSTOMER_ID);
-      console.log(item?.AMOUNT);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleEdit = (index: any) => {
+    setEditingRow(index);
+  };
+
+  const handleSave = (updatedItem: any) => {
+    fetchDataUpdate(updatedItem);
   };
 
   const fetchDataDelete = async (
@@ -88,6 +97,10 @@ function App() {
         customer: item?.CUSTOMER_ID,
         amount: item?.AMOUNT,
       });
+
+      useEffect(() => {
+        fetchDataSelect();
+      }, [fetchDataUpdate, fetchDataDelete]);
 
       delData(deleteData.data);
     } catch (error) {
@@ -163,7 +176,47 @@ function App() {
                   <td className="py-2">{item.OID}</td>
                   <td className="py-2">{item.DATE}</td>
                   <td className="py-2">{item.CUSTOMER_ID}</td>
-                  <td className="py-2">{item.AMOUNT}</td>
+                  <td className="py-2">
+                    {editingRow === index ? (
+                      <input
+                        className="text-black"
+                        type="text"
+                        value={item.AMOUNT}
+                        onChange={(e) => {
+                          const updatedItem = {
+                            ...item,
+                            AMOUNT: e.target.value,
+                          };
+                          showQuery((prevQuery) => {
+                            const updatedQuery = [...prevQuery];
+                            updatedQuery[index] = updatedItem;
+                            // console.log(updateQuery);
+                            console.log(updatedItem);
+                            return updatedQuery;
+                          });
+                        }}
+                      />
+                    ) : (
+                      item.AMOUNT
+                    )}
+                  </td>
+                  <td>
+                    {editingRow === index ? (
+                      <button
+                        onClick={() => handleSave(item)}
+                        className="mt-1.5 float-right bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-sm font-mono"
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleEdit(index)}
+                        className="mt-1.5 float-right bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </td>
                   <td>
                     <button
                       className="mt-1.5 float-right bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm font-mono"
@@ -171,12 +224,12 @@ function App() {
                     >
                       Delete
                     </button>
-                    <button
+                    {/* <button
                       className="mt-1.5 float-right bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
                       onClick={() => editDataClick(item)}
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
