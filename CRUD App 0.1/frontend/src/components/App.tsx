@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
-
-
 function App() {
   const [query, showQuery] = useState([]);
   const [update, updateQuery] = useState([]);
@@ -22,27 +19,34 @@ function App() {
   //     });
   // });
 
-
-  
   const fetchDataSelect = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/updt");
       showQuery(response.data);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
+
   const fetchDataUpdate = async (
     item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
   ) => {
     try {
-
       // if (item?.OID > 0) {
-
+      const data = {
+        id: item?.OID,
+        date: item?.DATE,
+        customer: item?.CUSTOMER_ID,
+        amount: item?.AMOUNT,
+      };
       // }
-
-      console.log(query);
-
+      const response = await axios.post(
+        "http://localhost:3000/api/update",
+        data
+      );
+      updateQuery(response.data);
+      console.log(update);
       console.log(item?.OID);
       console.log(item?.DATE);
       console.log(item?.CUSTOMER_ID);
@@ -56,7 +60,15 @@ function App() {
     item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
   ) => {
     try {
-      const response = await axios.delete("http://localhost:3000/api/updt");
+      const data = {
+        id: item?.OID,
+        date: item?.DATE,
+        customer: item?.CUSTOMER_ID,
+        amount: item?.AMOUNT,
+      };
+      const response = await axios.delete("http://localhost:3000/api/updt", {
+        data,
+      });
       showQuery(response.data);
 
       // Filter out the selected row from the query state
@@ -129,22 +141,6 @@ function App() {
         >
           New
         </button>
-        {/* <div className="mt-4">
-          <form action="/query" method="get" name="SQL" className="mb-4">
-            <label htmlFor="query" className="block text-gray-400">
-              Write your SQL Query here:
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 bg-gray-800 text-white rounded"
-            />
-            <input
-              type="submit"
-              value="Run"
-              className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-            />
-            </form>
-          </div> */}
       </div>
       <div className="bg-gray-800 p-4 font-mono ">
         <table className="w-full">

@@ -22,10 +22,10 @@ const config = {
         idleTimeoutMillis: 15000,
     },
 };
-const id = "11";
+const id = "100";
 const date = "";
 const customer = "1";
-const amount = "7100";
+const amount = "2";
 const selectcommand = "select * from orders";
 let updateCommand = `UPDATE ORDERS SET AMOUNT = ${amount} WHERE CUSTOMER_ID = ${customer}`;
 let updateCommand1 = `UPDATE ORDERS SET OID = ${id} WHERE AMOUNT = ${amount}`;
@@ -57,11 +57,12 @@ async function ConnectToDb() {
             });
         }
         async function deleteDataAndSend() {
-            const delresult = await connection.request().query(deleteCommand);
-            app.delete("/api/updt", (req, res) => {
-                console.log(req.body);
+            app.delete("/api/updt", async (req, res) => {
+                const delresult = await connection
+                    .request()
+                    .query(`DELETE FROM ORDERS WHERE AMOUNT = ${req.body.amount}`);
                 res.send(updtresult.recordset);
-                console.log(`data deleted`);
+                console.log(`complete data of ID number ${req.body.id} is deleted`);
             });
             const updtresult = await connection.request().query(selectcommand);
             app.get("/api/edit", (req, res) => {
@@ -76,6 +77,8 @@ async function ConnectToDb() {
             });
         }
         // Call selectDataAndSend initially and schedule it every second
+        await selectDataAndSend();
+        setInterval(selectDataAndSend, 1000);
         await updateDataAndSend();
         setInterval(updateDataAndSend, 1000);
         await deleteDataAndSend();
@@ -83,18 +86,36 @@ async function ConnectToDb() {
         app.get("/", (req, res) => {
             res.send(`<h1>welcome to node js crude app backend server<h1>`);
         });
-        app.post("/api/edit", async (req, res) => {
-            selectDataAndSend();
-            console.log(req.body);
-            res.send(`/api/edit is running`);
+        // app.post("/api/edit", async (req, res) => {
+        //   selectDataAndSend();
+        //   console.log(req.body);
+        //   res.send(`/api/edit is running`);
+        // });
+        app.post("/api/update", async (req, res) => {
+            try {
+                await updateDataAndSend();
+                res.send(`<h1>this is running<h1>`);
+                console.log(`edit button is pressed and working`);
+                return res.json;
+            }
+            catch (error) {
+                console.error();
+            }
         });
-        app.post("/api/update", (req, res) => {
-            res.send(`<h1>this is running<h1>`);
-            return res.json;
+        app.post("/api/delete", async (req, res) => {
+            try {
+                await updateDataAndSend();
+                res.send(`<h1>this is running<h1>`);
+                console.log(`delete button is pressed and working`);
+                return res.json;
+            }
+            catch (error) {
+                console.error();
+            }
         });
-        app.post("/api/delete", (req, res) => {
-            res.send(`<h1>this is running<h1>`);
-        });
+        // app.post("/api/delete", (req, res) => {
+        //   res.send(`<h1>this is running<h1>`);
+        // });
         app.listen(port, () => {
             console.log(`\nVisit http://localhost:${port} in your browser.`);
         });
