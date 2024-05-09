@@ -96,7 +96,14 @@ async function deleteDataAndSend() {
 }
 // Call selectDataAndSend initially and schedule it every second
 await selectDataAndSend();
-setInterval(selectDataAndSend, 1000);
+setInterval(async () => {
+    try {
+        selectDataAndSend();
+    }
+    catch (error) {
+        console.error("error fetching data", error);
+    }
+}, 10000);
 await updateDataAndSend();
 setInterval(updateDataAndSend, 1000);
 await deleteDataAndSend();
@@ -109,6 +116,19 @@ app.get("/", (req, res) => {
 //   console.log(req.body);
 //   res.send(`/api/edit is running`);
 // });
+app.post("/api/create", async (req, res) => {
+    try {
+        const newrecord = await connection.request().query(`INSERT INTO ORDERS(OID, DATE, CUSTOMER_ID, AMOUNT)
+VALUES ('${req.body.ID}', '${req.body.date}' , '${req.body.customerID}' , '${req.body.amount}');`);
+        console.log(req.body);
+        console.log(`new entry entered`);
+        res.send(newrecord.recordset);
+        return res.json;
+    }
+    catch (error) {
+        console.error();
+    }
+});
 app.post("/api/update", async (req, res) => {
     try {
         await updateDataAndSend();
@@ -141,3 +161,6 @@ app.post("/api/delete", async (req, res) => {
 app.listen(port, () => {
     console.log(`\nVisit http://localhost:${port} in your browser.`);
 });
+// app.listen(5173, () => {
+//   console.log(`\nVisit http://localhost:5173 in your browser.`);
+// });

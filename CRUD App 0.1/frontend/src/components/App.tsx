@@ -23,6 +23,7 @@ function App() {
   const fetchDataSelect = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/sql");
+      
       showQuery(response.data);
       console.log(response);
     } catch (error) {
@@ -112,17 +113,21 @@ function App() {
     window.history.pushState("", "", "/");
     window.location.reload();
   };
+  const handleCreateForm = async () => {
+    window.history.pushState("", "", "/new");
+    window.location.reload();
+  };
 
   //button related functions are below :
 
   const getDataClick = async () => {
     await fetchDataSelect();
   };
-  const editDataClick = async (
-    item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
-  ) => {
-    await fetchDataUpdate(item);
-  };
+  // const editDataClick = async (
+  //   item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
+  // ) => {
+  //   await fetchDataUpdate(item);
+  // };
   const deleteDataClick = async (
     item: { OID: any; DATE: any; CUSTOMER_ID: any; AMOUNT: any } | undefined
   ) => {
@@ -150,7 +155,7 @@ function App() {
         </button>
         <button
           className="text-center bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-sm font-mono"
-          // onClick={() => newDataClick()}
+          onClick={handleCreateForm}
         >
           New
         </button>
