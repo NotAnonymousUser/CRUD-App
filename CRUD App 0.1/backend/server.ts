@@ -52,58 +52,19 @@ async function selectDataAndSend() {
   }
 }
 
-async function updateDataAndSend() {
-  try {
-    app.put("/api/updt", async (req, res) => {
-      const updtresult = await connection
-        .request()
-        .query(
-          `UPDATE ORDERS SET AMOUNT = ${req.body.updatedItem.AMOUNT}  WHERE OID = ${req.body.updatedItem.OID} `
-        );
-      console.log(req.body);
-      console.log(`data updated`);
-      res.send(updtresult.recordset);
-    });
-
-    const selectresult1 = await connection
-      .request()
-      .query("select * from orders");
-    app.get("/api/updt", (req, res) => {
-      console.log(req.body);
-      res.send(selectresult1.recordset);
-    });
-  } catch (error) {
-    console.error();
-  }
-}
-async function deleteDataAndSend() {
-  try {
-    app.delete("/api/updt", async (req, res) => {
-      const delresult = await connection
-        .request()
-        .query(`DELETE FROM ORDERS WHERE CUSTOMER_ID = ${req.body.id}`);
-      res.send(updtresult.recordset);
-      console.log(`complete data of ID number ${req.body.id} is deleted`);
-    });
-
-    const updtresult = await connection.request().query("select * from orders");
-    app.get("/api/edit", (req, res) => {
-      console.log(req.body);
-      console.log(updtresult.recordset);
-      res.send(updtresult.recordset);
-    });
-
-    const selectresult1 = await connection
-      .request()
-      .query("select * from orders");
-    app.get("/api/updt", (req, res) => {
-      console.log(req.body);
-      res.send(selectresult1.recordset);
-    });
-  } catch (error) {
-    console.error();
-  }
-}
+// async function deleteDataAndSend() {
+//   try {
+//     app.delete("/api/delete", async (req, res) => {
+//       const delresult = await connection
+//         .request()
+//         .query(`DELETE FROM ORDERS WHERE CUSTOMER_ID = ${req.body.id}`);
+//       res.send(delresult.recordset);
+//       console.log(`complete data of ID number ${req.body.id} is deleted`);
+//     });
+//   } catch (error) {
+//     console.error();
+//   }
+// }
 
 // Call selectDataAndSend initially and schedule it every second
 
@@ -116,11 +77,8 @@ setInterval(async () => {
   }
 }, 10000);
 
-await updateDataAndSend();
-setInterval(updateDataAndSend, 1000);
-
-await deleteDataAndSend();
-setInterval(deleteDataAndSend, 1000);
+// await deleteDataAndSend();
+// setInterval(deleteDataAndSend, 1000);
 
 app.get("/", (req, res) => {
   res.send(`<h1>welcome to node js crude app backend server<h1>`);
@@ -150,14 +108,13 @@ VALUES ('${req.body.ID}', '${req.body.date}' , '${req.body.customerID}' , '${req
 
 app.post("/api/update", async (req, res) => {
   try {
-    await updateDataAndSend();
     const updtresult = await connection
       .request()
       .query(
         `UPDATE ORDERS SET AMOUNT = ${req.body.AMOUNT}  WHERE OID = ${req.body.OID} `
       );
     console.log(req.body);
-    console.log(`data updated`);
+    console.log(`data updated update one is running`);
     res.send(updtresult.recordset);
     return res.json;
   } catch (error) {
@@ -165,20 +122,23 @@ app.post("/api/update", async (req, res) => {
   }
 });
 
-app.post("/api/delete", async (req, res) => {
+app.delete("/api/delete", async (req, res) => {
   try {
-    await updateDataAndSend();
-    res.send(`<h1>this is running<h1>`);
-    console.log(`delete button is pressed and working`);
+    const delresult = await connection
+      .request()
+      .query(`DELETE FROM ORDERS WHERE CUSTOMER_ID = ${req.body.id}`);
+    res.send(delresult.recordset);
+    console.log(`complete data of ID number ${req.body.id} is deleted`);
+    console.log(`${req.body}`);
+    console.log(`${req}`);
+
+    
+    res.send(delresult.recordset);
     return res.json;
   } catch (error) {
     console.error();
   }
 });
-
-// app.post("/api/delete", (req, res) => {
-//   res.send(`<h1>this is running<h1>`);
-// });
 
 app.listen(port, () => {
   console.log(`\nVisit http://localhost:${port} in your browser.`);

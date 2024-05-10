@@ -20,10 +20,14 @@ function App() {
   //     });
   // });
 
+  useEffect(() => {
+    fetchDataSelect();
+  }, []);
+
   const fetchDataSelect = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/sql");
-      
+
       showQuery(response.data);
       console.log(response);
     } catch (error) {
@@ -76,7 +80,7 @@ function App() {
         customer: item?.CUSTOMER_ID,
         amount: item?.AMOUNT,
       };
-      const response = await axios.delete("http://localhost:3000/api/updt", {
+      const response = await axios.delete("http://localhost:3000/api/delete", {
         data,
       });
       showQuery(response.data);
@@ -87,21 +91,14 @@ function App() {
       // Update the state with the filtered data
       showQuery(filteredQuery);
 
-      // if (item) {
-      //   console.log(filteredQuery);
-      //   console.log(`row data deleted`);
-      // }
+      if (item) {
+        console.log(filteredQuery);
+        console.log(`row data deleted`);
+      }
 
-      const deleteData = await axios.post("http://localhost:3000/api/delete", {
-        id: item?.OID,
-        date: item?.DATE,
-        customer: item?.CUSTOMER_ID,
-        amount: item?.AMOUNT,
+      const deleteData = await axios.delete("http://localhost:3000/api/delete", {
+        data
       });
-
-      useEffect(() => {
-        fetchDataSelect();
-      }, [fetchDataUpdate, fetchDataDelete]);
 
       delData(deleteData.data);
     } catch (error) {
