@@ -25,13 +25,6 @@ const config = {
 const pool = new mssql.ConnectionPool(config);
 const connection = await pool.connect();
 console.log(`Connected to ${config.database} SQL Database`);
-// async function ConnectToDb() {
-//   try {
-//   } catch (err) {
-//     console.error("Error:", err);
-//   }
-//   ConnectToDb();
-// Function to fetch and send data
 async function selectDataAndSend() {
     try {
         const selectresult = await connection
@@ -68,16 +61,9 @@ setInterval(async () => {
         console.error("error fetching data", error);
     }
 }, 10000);
-// await deleteDataAndSend();
-// setInterval(deleteDataAndSend, 1000);
 app.get("/", (req, res) => {
     res.send(`<h1>welcome to node js crude app backend server<h1>`);
 });
-// app.post("/api/edit", async (req, res) => {
-//   selectDataAndSend();
-//   console.log(req.body);
-//   res.send(`/api/edit is running`);
-// });
 app.post("/api/create", async (req, res) => {
     try {
         const newrecord = await connection.request().query(`INSERT INTO ORDERS(OID, DATE, CUSTOMER_ID, AMOUNT)
@@ -109,7 +95,7 @@ app.delete("/api/delete", async (req, res) => {
     try {
         const delresult = await connection
             .request()
-            .query(`DELETE FROM ORDERS WHERE CUSTOMER_ID = ${req.body.id}`);
+            .query(`DELETE FROM ORDERS WHERE OID = ${req.body.id}`);
         res.send(delresult.recordset);
         console.log(`complete data of ID number ${req.body.id} is deleted`);
         console.log(`${req.body}`);
@@ -124,6 +110,3 @@ app.delete("/api/delete", async (req, res) => {
 app.listen(port, () => {
     console.log(`\nVisit http://localhost:${port} in your browser.`);
 });
-// app.listen(5173, () => {
-//   console.log(`\nVisit http://localhost:5173 in your browser.`);
-// });

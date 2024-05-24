@@ -80,10 +80,10 @@ function App() {
         customer: item?.CUSTOMER_ID,
         amount: item?.AMOUNT,
       };
-      const response = await axios.delete("http://localhost:3000/api/delete", {
-        data,
-      });
-      showQuery(response.data);
+      // const response = await axios.delete("http://localhost:3000/api/delete", {
+      //   data,
+      // });
+      // showQuery(response.data);
 
       // Filter out the selected row from the query state
       const filteredQuery = query.filter((row) => row.OID !== item?.OID);
@@ -91,10 +91,13 @@ function App() {
       // Update the state with the filtered data
       showQuery(filteredQuery);
 
-      if (item) {
-        console.log(filteredQuery);
-        console.log(`row data deleted`);
-      }
+
+// FOR DEBUGGING OR CHECKING IF DELETE IS WORKING OR NOT
+
+      // if (item) {
+      //   console.log(filteredQuery);
+      //   console.log(`row data deleted`);
+      // }
 
       const deleteData = await axios.delete("http://localhost:3000/api/delete", {
         data
