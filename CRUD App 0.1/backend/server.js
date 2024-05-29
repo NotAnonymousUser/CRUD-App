@@ -56,6 +56,7 @@ await selectDataAndSend();
 setInterval(async () => {
     try {
         selectDataAndSend();
+        console.log(`data fetched`);
     }
     catch (error) {
         console.error("error fetching data", error);

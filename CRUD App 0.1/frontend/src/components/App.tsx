@@ -164,7 +164,7 @@ function App() {
         <table className="w-full">
           <thead>
             <tr>
-              <td className="text-left text-gray-400">Sr.No </td>
+              
               <td className="text-left text-gray-400">ID </td>
               <td className="text-left text-gray-400">Date </td>
               <td className="text-left text-gray-400"> Customer ID</td>
@@ -177,7 +177,7 @@ function App() {
               query.map &&
               query.map((item, index) => (
                 <tr key={index} className="border-t border-gray-700 text-white">
-                  <td className="py-2">{index + 1}</td>
+                  
                   <td className="py-2">{item.OID}</td>
                   <td className="py-2">{item.DATE}</td>
                   <td className="py-2">{item.CUSTOMER_ID}</td>

@@ -64,17 +64,15 @@ await selectDataAndSend();
 setInterval(async () => {
   try {
     selectDataAndSend();
+    console.log(`data fetched`);
   } catch (error) {
     console.error("error fetching data", error);
   }
 }, 10000);
 
-
-
 app.get("/", (req, res) => {
   res.send(`<h1>welcome to node js crude app backend server<h1>`);
 });
-
 
 app.post("/api/create", async (req, res) => {
   try {
@@ -117,7 +115,6 @@ app.delete("/api/delete", async (req, res) => {
     console.log(`${req.body}`);
     console.log(`${req}`);
 
-    
     res.send(delresult.recordset);
     return res.json;
   } catch (error) {
