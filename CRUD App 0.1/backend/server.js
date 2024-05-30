@@ -26,17 +26,17 @@ const pool = new mssql.ConnectionPool(config);
 const connection = await pool.connect();
 console.log(`Connected to ${config.database} SQL Database`);
 async function selectDataAndSend() {
-    try {
-        const selectresult = await connection
-            .request()
-            .query(`select * from orders`);
-        app.get("/api/sql", (req, res) => {
+    app.get("/api/sql", async (req, res) => {
+        try {
+            const selectresult = await connection
+                .request()
+                .query(`select * from orders`);
             res.send(selectresult.recordset);
-        });
-    }
-    catch (error) {
-        console.error();
-    }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
 }
 // async function deleteDataAndSend() {
 //   try {
